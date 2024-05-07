@@ -15,10 +15,7 @@ public class ArticleManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-    }
 
-    private void Start()
-    {
         _articles.Add(new Article()
         {
             Name = "김홍일",
@@ -76,5 +73,10 @@ public class ArticleManager : MonoBehaviour
             Like = 20,
             WriteTime = DateTime.Now
         });
+    }
+
+    private void Start()
+    {
+        
     }
 }
