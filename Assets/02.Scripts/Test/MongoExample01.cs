@@ -9,6 +9,19 @@ public class MongoExample01 : MonoBehaviour
 {
     private void Start()
     {
+        // var: 암시적 타입으로써 데이터의 자료형을 자동으로 설정하는 키워드
+        // r-value로부터 자동으로 타입을 유추 -> 선언과 동시에 초기값이 있어야 함
+        // 장점: 간단하다.
+        // 단점: 자료형이 명확하지 않아서 휴먼 에러가 날 수 있다.
+        // 언제쓰면 좋냐?: 자료형이 너무 길 경우, foreach 반복문에서 명확할 경우
+        List<Article> articles = new List<Article>();
+        foreach (var article in articles)
+        {
+
+        }
+
+
+
         // 몽고 데이터베이스에 연결
         // 연결 문자열: 데이터베이스 연결을 위한 정보가 담겨있는 문자열
         string connectionString = "mongodb+srv://mongodb:mongodb@cluster0.2rt9iau.mongodb.net/";
@@ -38,8 +51,7 @@ public class MongoExample01 : MonoBehaviour
         }
 
         // 5. 콜렉션 연결 및 도큐먼트 개수 출력
-        //IMongoCollection<BsonDocument> movieCollection = sampleDB.GetCollection<BsonDocument>("movies");
-        var movieCollection = sampleDB.GetCollection<BsonDocument>("movies");
+        IMongoCollection<BsonDocument> movieCollection = sampleDB.GetCollection<BsonDocument>("movies");
         long count = movieCollection.CountDocuments(new BsonDocument());
         Debug.Log($"영화 개수: {count}");
 
