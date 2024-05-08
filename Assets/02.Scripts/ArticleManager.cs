@@ -1,7 +1,11 @@
+using MongoDB.Bson;
+using MongoDB.Driver;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
+using Unity.VisualScripting;
 using UnityEngine;
 
 // 1. 하나만을 보장
@@ -12,93 +16,78 @@ public class ArticleManager : MonoBehaviour
     private List<Article> _articles = new List<Article>();
     public List<Article> Articles => _articles;
 
+    public UI_ArticleList UI_ArticleList;
+
     public static ArticleManager Instance {  get; private set; }
     private void Awake()
     {
         Instance = this;
 
-        /* _articles.Add(new Article()
-         {
-             Name = "김홍일",
-             Content = "안녕하세요.",
-             ArticleType = ArticleType.Normal,
-             Like = 20,
-             WriteTime = DateTime.Now
-         });
-         _articles.Add(new Article()
-         {
-             Name = "민예진",
-             Content = "하이",
-             ArticleType = ArticleType.Normal,
-             Like = 7,
-             WriteTime = DateTime.Now
-         });
-         _articles.Add(new Article()
-         {
-             Name = "조희수",
-             Content = "해삐:)",
-             ArticleType = ArticleType.Normal,
-             Like = 908,
-             WriteTime = DateTime.Now
+        RefreshList();
+    }
 
-         });
-         _articles.Add(new Article()
-         {
-             Name = "고승연",
-             Content = "안녕하세~",
-             ArticleType = ArticleType.Normal,
-             Like = 20,
-             WriteTime = DateTime.Now
-         });
-         _articles.Add(new Article()
-         {
-             Name = "이태환",
-             Content = "나는 전설이다.",
-             ArticleType = ArticleType.Normal,
-             Like = 320,
-             WriteTime = DateTime.Now
-         });
-         _articles.Add(new Article()
-         {
-             Name = "이성민",
-             Content = "나는 짱이다.",
-             ArticleType = ArticleType.Normal,
-             Like = 30,
-             WriteTime = DateTime.Now
-         });
-         _articles.Add(new Article()
-         {
-             Name = "96년생정성훈",
-             Content = "하이루방가방가",
-             ArticleType = ArticleType.Normal,
-             Like = 20,
-             WriteTime = DateTime.Now
-         });*/
+    public void OnClickNoticeButton()
+    {
+        UI_ArticleList.Refresh();
+        _articles.Clear();
 
+        string connectionString = "mongodb+srv://mongodb:mongodb@cluster0.2rt9iau.mongodb.net/";
+        MongoClient mongoClient = new MongoClient(connectionString);
+        IMongoDatabase metaverseDB = mongoClient.GetDatabase("metaverse");
+        IMongoCollection<BsonDocument> articlesCollection = metaverseDB.GetCollection<BsonDocument>("articles");
+        var noticeFilter = Builders<BsonDocument>.Filter.Eq("ArticleType", 1);
+        List<BsonDocument> documents = articlesCollection.Find(noticeFilter).ToList();
+        foreach (var data in documents)
+        {
+            Article article = new Article();
+            article.ArticleType = (ArticleType)(int)data["ArticleType"];
+            article.Name = data["Name"].ToString();
+            article.Content = data["Content"].ToString();
+            article.Like = (int)data["Like"];
+            article.WriteTime = DateTime.Parse(data["WriteTime"].AsString);
 
-        // JSON이란 자바스크립트 객체 표기법으로 요즘 가장 많이 사용하는
-        //         데이터 텍스트 구조
-        // C#의 딕셔너리를 표현하는 방법과 비슷하다.
-        // "키":"밸류" 형태의 데이터를 객체({})와 배열([])의 조합으로 표현한다.
+            // _articles에 넣기
+            _articles.Add(article);
+        }
+    }
 
-        // 유니티의 특별한 파일 저장 경로
-        // 유니티만이 쓸 수 있는 파일 저장 경로를 가지고 있다.
-        Debug.Log(Application.persistentDataPath);
-        string path = Application.persistentDataPath;
+    public void OnClickAllButton()
+    {
+        UI_ArticleList.Refresh();
+        _articles.Clear();
 
-        // 1. 객체를 Json포맷의 텍스르로 변환한 다음 파일 'data.txt'에 저장한다.
-        // json은 일반 클래스는 직렬화할 수 있지만 리스트 그 자체는 직렬화를 못한다.
-        // 일반 클래스로 리스트를 덮어 씌운다.
-        /*ArticleData articleData = new ArticleData(_articles);
-        string jsonData = JsonUtility.ToJson(articleData);
-        Debug.Log(jsonData);
-        StreamWriter sw = File.CreateText($"{path}/data.txt");
-        sw.Write(jsonData);
-        sw.Close();*/
+        RefreshList();
+    }
 
-        // 2. 데이터를 하드코딩한 코드를 지운다.
-        // 3. 'data.txt'로부터 json을 읽어와서 객체들을 초기화한다.
-        string txt = File.ReadAllText($"{path}/data.txt");
-        _articles = JsonUtility.FromJson<ArticleData>(txt).Data;
+    private void RefreshList()
+    {
+        // 몽고 DB로부터 article 조회
+
+        // 1. 몽고DB 연결
+        string connectionString = "mongodb+srv://mongodb:mongodb@cluster0.2rt9iau.mongodb.net/";
+        MongoClient mongoClient = new MongoClient(connectionString);
+
+        // 2. 특정 데이터베이스 연결
+        IMongoDatabase metaverseDB = mongoClient.GetDatabase("metaverse");
+
+        // 3. 특정 콜렉션 연결
+        IMongoCollection<BsonDocument> articlesCollection = metaverseDB.GetCollection<BsonDocument>("articles");
+
+        // 4. 모든 문서 읽어오기
+        List<BsonDocument> documents = articlesCollection.Find(new BsonDocument()).ToList();
+
+        // 5. 읽어 온 문서 만큼 New Article()에서 데이터 채우고 _articles에 넣기
+        foreach (var data in documents)
+        {
+            Article article = new Article();
+            article.ArticleType = (ArticleType)(int)data["ArticleType"];
+            article.Name = data["Name"].ToString();
+            article.Content = data["Content"].ToString();
+            article.Like = (int)data["Like"];
+            article.WriteTime = DateTime.Parse(data["WriteTime"].AsString);
+
+            // _articles에 넣기
+            _articles.Add(article);
+        }
     }
 }
