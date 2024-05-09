@@ -1,12 +1,9 @@
 using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Data;
-using System.IO;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 // 1. 하나만을 보장
 // 2. 어디서든 쉽게 접근 가능
@@ -83,5 +80,32 @@ public class ArticleManager : MonoBehaviour
         // 3. 특정 콜렉션 연결
         // _articleCollection = db.GetCollection<BsonDocument>("articles");
         _articleCollection = db.GetCollection<Article>("articles");
+    }
+
+    public void Write(string content, Toggle toggle)
+    {
+        if (toggle.isOn)
+        {
+            _articleCollection.InsertOne(new Article()
+            {
+                Name = "고양이",
+                Content = content,
+                ArticleType = ArticleType.Notice,
+                Like = 1,
+                WriteTime = DateTime.UtcNow
+            });
+        }
+        else
+        {
+            _articleCollection.InsertOne(new Article()
+            {
+                Name = "고양이",
+                Content = content,
+                ArticleType = ArticleType.Normal,
+                Like = 2,
+                WriteTime = DateTime.UtcNow
+            });
+        }
+        FindAll();
     }
 }

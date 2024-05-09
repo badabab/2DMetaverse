@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using Unity.Android.Types;
 using UnityEngine;
 
 // UI_Article 관리
@@ -7,10 +9,15 @@ public class UI_ArticleList : MonoBehaviour
 {
     public List<UI_Article> UIArticles;
     public GameObject EmptyObject;
+    public GameObject UI_ArticleWrite;
+
+    public TextMeshProUGUI Button_All;
+    public TextMeshProUGUI Button_Notice;
 
     private void Start()
     {
         Refresh();
+        UI_ArticleWrite.SetActive(false);
     }
 
     // 새로고침
@@ -43,11 +50,20 @@ public class UI_ArticleList : MonoBehaviour
     {
         ArticleManager.Instance.FindAll();
         Refresh();
+        Button_All.color = new Color32(0, 0, 0, 255);
+        Button_Notice.color = new Color32(0, 0, 0, 150);
     }
     // 공지 버튼을 클릭했을 때 호출되는 함수
     public void OnClickNoticeButton()
     {
         ArticleManager.Instance.FindNotice();
         Refresh();
+        Button_All.color = new Color32(0, 0, 0, 150);
+        Button_Notice.color = new Color32(0, 0, 0, 255);
+    }
+    // 글쓰기 버튼
+    public void OnClickWriteButton()
+    {
+        UI_ArticleWrite.SetActive(true);
     }
 }
