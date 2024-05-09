@@ -37,4 +37,17 @@ public class UI_ArticleList : MonoBehaviour
             UIArticles[i].Init(articles[i]);
         }
     }
+
+    // 전체보기 버튼을 클릭했을 때 호출되는 함수
+    public void OnClickAllButton()
+    {
+        ArticleManager.Instance.FindAll();
+        Refresh();
+    }
+    // 공지 버튼을 클릭했을 때 호출되는 함수
+    public void OnClickNoticeButton()
+    {
+        ArticleManager.Instance.FindNotice();
+        Refresh();
+    }
 }

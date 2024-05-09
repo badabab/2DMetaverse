@@ -1039,8 +1039,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1043426340}
-        m_TargetAssemblyTypeName: ArticleManager, Assembly-CSharp
+      - m_Target: {fileID: 2019967590}
+        m_TargetAssemblyTypeName: UI_ArticleList, Assembly-CSharp
         m_MethodName: OnClickAllButton
         m_Mode: 1
         m_Arguments:
@@ -2117,8 +2117,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1043426340}
-        m_TargetAssemblyTypeName: ArticleManager, Assembly-CSharp
+      - m_Target: {fileID: 2019967590}
+        m_TargetAssemblyTypeName: UI_ArticleList, Assembly-CSharp
         m_MethodName: OnClickNoticeButton
         m_Mode: 1
         m_Arguments:
@@ -2504,7 +2504,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0566eeca5b03bb849929006d4efc123c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UI_ArticleList: {fileID: 2019967590}
 --- !u!4 &1043426341
 Transform:
   m_ObjectHideFlags: 0
