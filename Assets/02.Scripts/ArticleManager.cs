@@ -17,7 +17,7 @@ public class ArticleManager : MonoBehaviour
     public List<Article> Articles => _articles;
 
     // 콜렉션
-    private IMongoCollection<BsonDocument> _articleCollection;
+    private IMongoCollection<Article> _articleCollection;
 
     public static ArticleManager Instance { get; private set; }
     private void Awake()
@@ -28,10 +28,17 @@ public class ArticleManager : MonoBehaviour
     }
 
     public void FindAll()
-    {      
+    {
         // 4. 모든 문서 읽어오기
-        List<BsonDocument> dataList = _articleCollection.Find(new BsonDocument()).ToList();
-        _articles.Clear();
+        // 4-1. WriteTime을 기준으로 '정렬'
+        // Sort 메서드를 이용해서 도큐먼트를 정렬할 수 있다.
+        // 매개변수로는 어떤 Key로 정렬할 것인지 알려주는 BsonDocument를 전달해주면 된다.
+        var sort = new BsonDocument();
+        sort["WriteTime"] = -1;
+        // +1 -> 오름차순 정렬 -> 낮은 값에서 높은 값으로 정렬한다.
+        // -1 -> 내림차순 정렬 -> 높은 값에서 낮은 값으로 정렬한다.
+        _articles = _articleCollection.Find(new BsonDocument()).Sort(sort).ToList();
+        /*_articles.Clear();
         // 5. 읽어 온 문서 만큼 New Article()에서 데이터 채우고 _articles에 넣기
         foreach (var data in dataList)
         {
@@ -43,13 +50,13 @@ public class ArticleManager : MonoBehaviour
             article.WriteTime = DateTime.Parse(data["WriteTime"].ToString());
             // _articles에 넣기
             _articles.Add(article);
-        }
+        }*/
     }
 
     public void FindNotice()
     {
-        List<BsonDocument> documents = _articleCollection.Find(data => data["ArticleType"] == (int)ArticleType.Notice).ToList();
-        _articles.Clear();
+        _articles = _articleCollection.Find(data => (int)data.ArticleType == (int)ArticleType.Notice).ToList();
+       /* _articles.Clear();
         foreach (var data in documents)
         {
             Article article = new Article();
@@ -60,7 +67,7 @@ public class ArticleManager : MonoBehaviour
             article.WriteTime = DateTime.Parse(data["WriteTime"].ToString());
             // _articles에 넣기
             _articles.Add(article);
-        }
+        }*/
     }   
 
     private void Init()
@@ -74,6 +81,7 @@ public class ArticleManager : MonoBehaviour
         IMongoDatabase db = mongoClient.GetDatabase("metaverse");
 
         // 3. 특정 콜렉션 연결
-        _articleCollection = db.GetCollection<BsonDocument>("articles");
+        // _articleCollection = db.GetCollection<BsonDocument>("articles");
+        _articleCollection = db.GetCollection<Article>("articles");
     }
 }

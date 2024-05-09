@@ -1,6 +1,8 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 // MVC 아키텍처 패턴
 // - Model      (데이터와 그 데이터를 다루는 로직) -> Article
@@ -18,7 +20,10 @@ public enum ArticleType
 [Serializable]
 public class Article // Quest, Item, Achievement, Attendance 
 {
+    [BsonId]
+    public ObjectId Id;             // 유일한 주민번호: Id, _id, id (시간 + 기기ID + 프로세스ID + count)
     public ArticleType ArticleType; // 일반글? 공지사항글이냐?
+    [BsonElement("Name")]
     public string Name;             // 글쓴이
     public string Content;          // 글 내용
     public int Like;                // 좋아요 개수
