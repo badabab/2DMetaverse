@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.ParticleSystem;
 
 // 1. 하나만을 보장
 // 2. 어디서든 쉽게 접근 가능
@@ -102,5 +103,10 @@ public class ArticleManager : MonoBehaviour
         /*var filter = Builders<Article>.Filter.Eq("_id", id);
         _articleCollection.DeleteOne(filter);*/
         _articleCollection.DeleteOne(d => d.Id == id);
+    }
+
+    public void Replace(Article article)
+    {
+        _articleCollection.ReplaceOne(d => d.Id == article.Id, article);
     }
 }
