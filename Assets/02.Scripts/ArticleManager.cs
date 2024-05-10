@@ -2,6 +2,7 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -94,5 +95,12 @@ public class ArticleManager : MonoBehaviour
         };
         _articleCollection.InsertOne(article);
         FindAll();
+    }
+
+    public void Delete(ObjectId id)
+    {       
+        /*var filter = Builders<Article>.Filter.Eq("_id", id);
+        _articleCollection.DeleteOne(filter);*/
+        _articleCollection.DeleteOne(d => d.Id == id);
     }
 }

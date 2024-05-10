@@ -1,3 +1,4 @@
+using MongoDB.Bson;
 using System;
 using TMPro;
 using UnityEngine;
@@ -11,8 +12,12 @@ public class UI_Article : MonoBehaviour
     public TextMeshProUGUI LikeTextUI;       // 좋아요 개수
     public TextMeshProUGUI WriteTimeUI;      // 글 쓴 날짜/시간
 
-    public void Init(Article article)
+    public UI_ArticleMenu MenuUI;
+    private Article _article;
+
+    public void Init(in Article article)
     {
+        _article = article;
         NameTextUI.text = article.Name;
         ContentTextUI.text = article.Content;
         LikeTextUI.text = $"{article.Like}";
@@ -43,5 +48,10 @@ public class UI_Article : MonoBehaviour
             return $"{time.TotalDays / 7:N0}주 전";
         }
         return dateTime.ToString("yyyy년 M월 d일");
+    }
+
+    public void OnClickMenuButton()
+    {
+        MenuUI.Show(_article);
     }
 }

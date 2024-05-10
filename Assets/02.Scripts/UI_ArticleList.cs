@@ -7,12 +7,19 @@ using UnityEngine;
 // UI_Article 관리
 public class UI_ArticleList : MonoBehaviour
 {
+    public static UI_ArticleList Instance { get; private set; }
+
     public List<UI_Article> UIArticles;
     public GameObject EmptyObject;
     public GameObject UI_ArticleWrite;
 
     public TextMeshProUGUI Button_All;
     public TextMeshProUGUI Button_Notice;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     private void Start()
     {

@@ -37,11 +37,5 @@ public class UI_ArticleWrite : MonoBehaviour
         ContentInputFieldUI.text = string.Empty;
         NoticeToggleUI.isOn = false;
         gameObject.SetActive(false);
-        /*ArticleManager.Instance.Write(NoticeToggleUI.isOn? ArticleType.Notice:ArticleType.Normal, ContentInputFieldUI.text.ToString());
-        UI_ArticleList.GetComponent<UI_ArticleList>().Refresh();
-        ContentInputFieldUI.text = string.Empty;
-        NoticeToggleUI.isOn = false;
-        UI_ArticleList.gameObject.SetActive(true);
-        gameObject.SetActive(false);*/
     }
 }
