@@ -82,30 +82,17 @@ public class ArticleManager : MonoBehaviour
         _articleCollection = db.GetCollection<Article>("articles");
     }
 
-    public void Write(string content, Toggle toggle)
+    public void Write(ArticleType articleType, string content)
     {
-        if (toggle.isOn)
+        Article article = new Article()
         {
-            _articleCollection.InsertOne(new Article()
-            {
-                Name = "고양이",
-                Content = content,
-                ArticleType = ArticleType.Notice,
-                Like = 0,
-                WriteTime = DateTime.UtcNow
-            });
-        }
-        else
-        {
-            _articleCollection.InsertOne(new Article()
-            {
-                Name = "고양이",
-                Content = content,
-                ArticleType = ArticleType.Normal,
-                Like = 0,
-                WriteTime = DateTime.UtcNow
-            });
-        }
+            Name = "고양이",
+            Content = content,
+            ArticleType = articleType,
+            Like = 0,
+            WriteTime = DateTime.Now
+        };
+        _articleCollection.InsertOne(article);
         FindAll();
     }
 }

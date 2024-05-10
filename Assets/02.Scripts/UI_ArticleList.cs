@@ -45,7 +45,6 @@ public class UI_ArticleList : MonoBehaviour
         }
     }
 
-    // 전체보기 버튼을 클릭했을 때 호출되는 함수
     public void OnClickAllButton()
     {
         ArticleManager.Instance.FindAll();
@@ -53,7 +52,7 @@ public class UI_ArticleList : MonoBehaviour
         Button_All.color = new Color32(0, 0, 0, 255);
         Button_Notice.color = new Color32(0, 0, 0, 150);
     }
-    // 공지 버튼을 클릭했을 때 호출되는 함수
+
     public void OnClickNoticeButton()
     {
         ArticleManager.Instance.FindNotice();
@@ -61,9 +60,18 @@ public class UI_ArticleList : MonoBehaviour
         Button_All.color = new Color32(0, 0, 0, 150);
         Button_Notice.color = new Color32(0, 0, 0, 255);
     }
-    // 글쓰기 버튼
+
     public void OnClickWriteButton()
     {
+        Button_All.color = new Color32(0, 0, 0, 255);
+        Button_Notice.color = new Color32(0, 0, 0, 150);
         UI_ArticleWrite.SetActive(true);
+        gameObject.SetActive(false);
+    }
+
+    public void Show()
+    {
+        gameObject.SetActive(true);
+        Refresh();
     }
 }
