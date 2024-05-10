@@ -8,8 +8,8 @@ using UnityEngine.UI;
 public class UI_ArticleWrite : MonoBehaviour
 {
     public GameObject UI_ArticleList;
-    public Toggle Toggle;
-    public TMP_InputField InputField;
+    public Toggle NoticeToggleUI;
+    public TMP_InputField ContentInputFieldUI;
 
     private void Start()
     {
@@ -17,17 +17,17 @@ public class UI_ArticleWrite : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public void OnClickCloseButton()
+    public void OnClickExitButton()
     {
         gameObject.SetActive(false);
     }
 
-    public void OnClickFinishButton()
+    public void OnClickCompleteButton()
     {
-        ArticleManager.Instance.Write(InputField.text.ToString(),Toggle);
+        ArticleManager.Instance.Write(ContentInputFieldUI.text.ToString(),NoticeToggleUI);
         UI_ArticleList.GetComponent<UI_ArticleList>().Refresh();
-        InputField.text = string.Empty;
-        Toggle.isOn = false;
+        ContentInputFieldUI.text = string.Empty;
+        NoticeToggleUI.isOn = false;
         gameObject.SetActive(false);
     }
 }

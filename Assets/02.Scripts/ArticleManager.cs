@@ -91,7 +91,7 @@ public class ArticleManager : MonoBehaviour
                 Name = "고양이",
                 Content = content,
                 ArticleType = ArticleType.Notice,
-                Like = 1,
+                Like = 0,
                 WriteTime = DateTime.UtcNow
             });
         }
@@ -102,7 +102,7 @@ public class ArticleManager : MonoBehaviour
                 Name = "고양이",
                 Content = content,
                 ArticleType = ArticleType.Normal,
-                Like = 2,
+                Like = 0,
                 WriteTime = DateTime.UtcNow
             });
         }

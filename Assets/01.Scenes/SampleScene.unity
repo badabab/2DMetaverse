@@ -1425,7 +1425,7 @@ GameObject:
   - component: {fileID: 527919765}
   - component: {fileID: 527919764}
   m_Layer: 5
-  m_Name: Button_Close
+  m_Name: Button_Exit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1496,7 +1496,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 528113385}
         m_TargetAssemblyTypeName: UI_ArticleWrite, Assembly-CSharp
-        m_MethodName: OnClickCloseButton
+        m_MethodName: OnClickExitButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1636,8 +1636,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UI_ArticleList: {fileID: 2019967586}
-  Toggle: {fileID: 415135363}
-  InputField: {fileID: 894749697}
+  NoticeToggleUI: {fileID: 0}
+  ContentInputFieldUI: {fileID: 0}
 --- !u!1 &573257472
 GameObject:
   m_ObjectHideFlags: 0
@@ -4676,7 +4676,7 @@ GameObject:
   - component: {fileID: 1933970900}
   - component: {fileID: 1933970902}
   m_Layer: 5
-  m_Name: Text_Finish
+  m_Name: Button_Complete
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4844,7 +4844,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 528113385}
         m_TargetAssemblyTypeName: UI_ArticleWrite, Assembly-CSharp
-        m_MethodName: OnClickFinishButton
+        m_MethodName: OnClickCompleteButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
