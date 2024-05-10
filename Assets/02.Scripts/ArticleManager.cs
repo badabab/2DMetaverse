@@ -109,4 +109,10 @@ public class ArticleManager : MonoBehaviour
     {
         _articleCollection.ReplaceOne(d => d.Id == article.Id, article);
     }
+
+    public void Like(Article article)
+    {
+        var updateDefinition = Builders<Article>.Update.Inc("Like", 1);
+        UpdateResult result = _articleCollection.UpdateMany(d => d.Id == article.Id, updateDefinition);
+    }
 }
