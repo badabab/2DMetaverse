@@ -2,10 +2,7 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using UnityEngine;
-using UnityEngine.UI;
-using static UnityEngine.ParticleSystem;
 
 // 1. 하나만을 보장
 // 2. 어디서든 쉽게 접근 가능
@@ -110,9 +107,18 @@ public class ArticleManager : MonoBehaviour
         _articleCollection.ReplaceOne(d => d.Id == article.Id, article);
     }
 
-    public void Like(Article article)
+    public void AddLike(Article article)
     {
         var updateDefinition = Builders<Article>.Update.Inc("Like", 1);
         UpdateResult result = _articleCollection.UpdateMany(d => d.Id == article.Id, updateDefinition);
+
+        /*
+         // 1. 필터
+        var filter = Builders<Article>.Filter.Eq("_id", article.Id);
+        // 2. 업데이트 정의
+        var updateDef = Builders<Article>.Update.Set("Like", article.Like + 1);
+        // 3. 업데이트
+        _articleCollection.UpdateOne(filter, updateDef);
+        */
     }
 }

@@ -1,5 +1,3 @@
-using MongoDB.Bson;
-using MongoDB.Driver;
 using System;
 using TMPro;
 using UnityEngine;
@@ -58,7 +56,7 @@ public class UI_Article : MonoBehaviour
 
     public void OnClickLikeButton()
     {
-        ArticleManager.Instance.Like(_article);
+        ArticleManager.Instance.AddLike(_article);
         ArticleManager.Instance.FindAll();
         UI_ArticleList.Instance.Show();
     }
