@@ -27,6 +27,7 @@ public class Article // Quest, Item, Achievement, Attendance
     public string Content;          // 글 내용
     public int Like;                // 좋아요 개수
     public DateTime WriteTime;      // 글 쓴 날짜/시간
+    public string Profile;
 }
 
 [Serializable]
