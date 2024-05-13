@@ -1,13 +1,18 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
-using static System.Net.WebRequestMethods;
+using Debug = UnityEngine.Debug;
+
 // Article 데이터를 보여주는 게임 오브젝트
 public class UI_Article : MonoBehaviour
 {
+    private static Dictionary<string, Texture> _cache = new Dictionary<string, Texture>();
+
     public RawImage ProfileImageUI;   // 프로필 이미지
     public TextMeshProUGUI NameTextUI;       // 글쓴이
     public TextMeshProUGUI ContentTextUI;    // 글 내용
@@ -22,21 +27,39 @@ public class UI_Article : MonoBehaviour
         _article = article;
         NameTextUI.text = article.Name;
         ContentTextUI.text = article.Content;
-        LikeTextUI.text = $"{article.Like}";
+        LikeTextUI.text = $"좋아요 {article.Like}";
         WriteTimeUI.text = GetTimeString(article.WriteTime.ToLocalTime());
-        StartCoroutine(GetTexture(article));
+        StartCoroutine(GetTexture(_article.Profile));
     }
 
-    IEnumerator GetTexture(Article article)
+    private IEnumerator GetTexture(string url)
     {
-        // Http 주문을 위해 주문서(Request)를 만든다.
-        // -> 주문서 내용: URL로부터 텍스쳐(이미지)를 다운로드하기 위한 GET Request 요청
-        if (article.Profile == null)
+        if (url == null)
         {
-            article.Profile = "http://192.168.200.105:1234/emtpy.png";
+            url = "http://192.168.200.105:1234/empty.png";
         }
-        UnityWebRequest www = UnityWebRequestTexture.GetTexture(article.Profile);
-        yield return www.SendWebRequest();  // 비동기
+
+        // 캐쉬된게 있을 때 -> 캐시 히트(적중)
+        if (_cache.ContainsKey(url))
+        {
+            var now = DateTime.Now;
+
+            ProfileImageUI.texture = _cache[url];
+
+            var span = DateTime.Now - now;
+            //Debug.Log($"캐시 히트!: {span.TotalMilliseconds}");
+
+            yield break;
+        }
+
+        // Http 주문을 위해 주w문서(Request)를 만든다.
+        // -> 주문서 내용: URL로부터 텍스처(이미지)를 다운로드하기 위한 GET Request 요청
+        UnityWebRequest www = UnityWebRequestTexture.GetTexture(url);
+
+        Stopwatch stopwatch = new Stopwatch();
+        stopwatch.Start();
+
+        yield return www.SendWebRequest(); // 비동기
 
         if (www.isNetworkError || www.isHttpError)
         {
@@ -44,11 +67,18 @@ public class UI_Article : MonoBehaviour
         }
         else
         {
+
             Texture myTexture = ((DownloadHandlerTexture)www.downloadHandler).texture;
             ProfileImageUI.texture = myTexture;
+
+            stopwatch.Stop();
+            //Debug.Log($"캐시 미스!: {stopwatch.ElapsedTicks}"); // 나노세컨즈
+
+            // 캐싱
+            _cache[url] = myTexture;
         }
     }
-
+    
     private string GetTimeString(DateTime dateTime)
     {
         TimeSpan time = DateTime.Now - dateTime;    
